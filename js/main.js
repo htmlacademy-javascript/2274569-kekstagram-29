@@ -75,21 +75,21 @@ function createRandomIdFromRangeGenerator (min, max) {
 }
 
 const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
+const generatePhotoUrl = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoLike = createRandomIdFromRangeGenerator(15, 200);
 const generatePhotoDescription = createRandomIdFromRangeGenerator(0, 24);
 const generateCommentId = createRandomIdFromRangeGenerator(1, 9999);
-const generateCommentAvatar = createRandomIdFromRangeGenerator(1, 6);
 
 const createComment = () => ({
   id: generateCommentId(),
-  avatar: `img/avatar-${ generateCommentAvatar() }.svg`,
+  avatar: `img/avatar-${ getRandomInteger(1, 6) }.svg`,
   message: getRandomArrayElement(MESSAGE),
   name: `${getRandomArrayElement(NAMES) }`
 });
 
 const createPost = () => ({
   id: generatePhotoId(),
-  url: `photos /${ generatePhotoId() }.jpg`,
+  url: `photos /${ generatePhotoUrl() }.jpg`,
   description: generatePhotoDescription(DESCRIPTION),
   likes: generatePhotoLike(),
   coments: Array.from({length: getRandomInteger(0, 30)}, createComment)
