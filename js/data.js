@@ -66,12 +66,12 @@ const createComment = () => ({
 
 const createPost = () => ({
   id: generatePhotoId(),
-  url: `photos /${ generatePhotoUrl() }.jpg`,
+  url: `photos/${ generatePhotoUrl() }.jpg`,
   description: generatePhotoDescription(DESCRIPTION),
   likes: generatePhotoLike(),
-  coments: Array.from({length: getRandomInteger(0, 30)}, createComment)
+  comments: Array.from({length: getRandomInteger(0, 30)}, createComment)
 });
 
-const posts = () => Array.from({length: POST_COUNT}, createPost);
+const createPosts = () => Array.from({length: POST_COUNT}, createPost);
 
-export {posts};
+export {createPosts};
