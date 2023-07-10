@@ -55,13 +55,13 @@ const generatePhotoId = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoUrl = createRandomIdFromRangeGenerator(1, 25);
 const generatePhotoLike = createRandomIdFromRangeGenerator(15, 200);
 const generatePhotoDescription = createRandomIdFromRangeGenerator(0, 24);
-const generateCommentId = createRandomIdFromRangeGenerator(1, 9999);
+const generateCommentId = createRandomIdFromRangeGenerator(1, 10000);
 
 const createComment = () => ({
   id: generateCommentId(),
   avatar: `img/avatar-${ getRandomInteger(1, 6) }.svg`,
   message: getRandomArrayElement(MESSAGE),
-  name: `${getRandomArrayElement(NAMES) }`
+  name: getRandomArrayElement(NAMES),
 });
 
 const createPost = () => ({
@@ -69,9 +69,9 @@ const createPost = () => ({
   url: `photos/${ generatePhotoUrl() }.jpg`,
   description: generatePhotoDescription(DESCRIPTION),
   likes: generatePhotoLike(),
-  comments: Array.from({length: getRandomInteger(0, 30)}, createComment)
+  comments: Array.from({length:getRandomInteger(0, 30)}, createComment),
 });
 
-const createPosts = () => Array.from({length: POST_COUNT}, createPost);
+const createPosts = Array.from({length: POST_COUNT}, createPost);
 
 export {createPosts};
