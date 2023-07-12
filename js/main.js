@@ -1,2 +1,3 @@
-import {createPosts} from './data.js';
-import './render-post.js';
+import './render-miniature-post.js';
+import './big-picture-details.js';
+import './big-picture.js';
