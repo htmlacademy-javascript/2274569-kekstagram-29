@@ -1408,3 +1408,7 @@ main {
 .hidden {
   display: none;
 }
+
+.pristine-error {
+  color: #d34040;
+}

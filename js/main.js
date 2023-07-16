@@ -1,3 +1,4 @@
 import './render-miniature-post.js';
-import './big-picture-details.js';
-import './big-picture.js';
+import './big-picture-modal.js';
+import './upload-form.js';
+import './form-validate.js';
