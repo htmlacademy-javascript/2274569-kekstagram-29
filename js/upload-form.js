@@ -1,5 +1,6 @@
 import {isEscapeKey} from './util.js';
 import {pristine} from './form-validate.js';
+import {changeOriginalEffect, effectChange} from './form-effects.js';
 
 //Форма.
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -52,7 +53,8 @@ const openForm = () => {
   scaleSmaller.addEventListener('click', onMinButtonClick);
   scaleBigger.addEventListener('click', onMaxButtonClick);
   //Эффекты.
-
+  changeOriginalEffect();
+  effecstList.addEventListener('change', effectChange);
 };
 
 //Вывод формы после выбора изображения.
