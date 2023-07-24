@@ -1,4 +1,4 @@
-import {onDocumentKeydown, closeForm} from './upload-form.js';
+import {onDocumentKeydown} from './upload-form.js';
 
 const imgUploadForm = document.querySelector('.img-upload__form');
 const imgUploadText = document.querySelector('.img-upload__text');
@@ -56,12 +56,5 @@ const calcelEsc = (item) => {
 };
 calcelEsc(textHashtags);
 calcelEsc(textDescription);
-
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  if(pristine.validate()){
-    closeForm ();
-  }
-});
 
 export {pristine};
