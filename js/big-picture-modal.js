@@ -2,7 +2,7 @@
 const QUANTITY_OF_COMMENTS = 5;
 
 import {isEscapeKey} from './util.js';
-import {createPosts} from './data.js';
+import { data } from './api.js';
 
 const collectionPosts = document.querySelector('.pictures');
 const bigPhotoModal = document.querySelector('.big-picture');
@@ -72,7 +72,7 @@ const createComments = (comments) => {
 
 // Функция, которая получает id поста, на который кликнули и подставляет в модальное окно его данные
 const createModalContent = (postId) => {
-  const currentPost = createPosts.find((post) => postId === post.id);
+  const currentPost = data.find((post) => postId === post.id);
   const {likes, url, comments, description} = currentPost;
   bigPhotoImage.src = url;
   bigPhotoLikes.textContent = likes;
