@@ -1,4 +1,7 @@
+import { data } from './api.js';
+
 const ALERT_SHOW_TIME = 5000;
+const RANDOM_PHOTOS_COUNT = 10;
 
 const errorContainer = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
 const successContainer = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
@@ -27,6 +30,34 @@ function createRandomIdFromRangeGenerator (min, max) {
     return currentValue;
   };
 }
+
+const generateArrayUniqueNumbers = (a, b) => {
+  const numbers = [];
+  while (numbers.length < RANDOM_PHOTOS_COUNT) {
+    const randomNumber = getRandomInteger(a, b);
+    let found = false;
+    for (let i = 0; i < numbers.length; i++) {
+      if (numbers[i] === randomNumber){
+        found = true;
+        break;
+      }
+    }
+    if (!found) {
+      numbers[numbers.length] = randomNumber;
+    }
+  }
+  return numbers;
+};
+
+const randomNumbers = generateArrayUniqueNumbers(1, 24);
+const createRandomPosts = () => {
+  const randomPosts = [];
+  for (let i = 0; i < randomNumbers.length; i++) {
+    const posts = data.find((post) => randomNumbers[i] === post.id);
+    randomPosts.push(posts);
+  }
+  return randomPosts;
+};
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -72,5 +103,22 @@ const showAlertSuccess = (message) => {
   }, ALERT_SHOW_TIME);
 };
 
+function debounce (callback, timeoutDelay) {
+  // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
+  // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
+  let timeoutId;
 
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, showAlertError, showAlertSuccess};
+  return (...rest) => {
+    // Перед каждым новым вызовом удаляем предыдущий таймаут,
+    // чтобы они не накапливались
+    clearTimeout(timeoutId);
+
+    // Затем устанавливаем новый таймаут с вызовом колбэка на ту же задержку
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+
+    // Таким образом цикл «поставить таймаут - удалить таймаут» будет выполняться,
+    // пока действие совершается чаще, чем переданная задержка timeoutDelay
+  };
+}
+
+export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, showAlertError, showAlertSuccess, createRandomPosts, debounce};

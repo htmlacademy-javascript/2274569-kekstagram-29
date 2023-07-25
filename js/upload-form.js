@@ -9,6 +9,23 @@ const formEditor = document.querySelector('.img-upload__overlay');
 const uploadCancelButton = document.querySelector('.img-upload__cancel');
 const effecstList = document.querySelector('.effects__list');
 
+//Превью фото.
+const FILE_TYPES = ['jpg', 'jpeg', 'png'];
+
+const fileChooser = document.querySelector('.img-upload__start input[type=file]');
+const imgUploadPreview = document.querySelector('.img-upload__preview img');
+
+fileChooser.addEventListener('change', () => {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
+
+  if (matches) {
+    imgUploadPreview.src = URL.createObjectURL(file);
+  }
+});
+
 //Масштаб.
 const scaleSmaller = document.querySelector('.scale__control--smaller');
 const scaleBigger = document.querySelector('.scale__control--bigger');
