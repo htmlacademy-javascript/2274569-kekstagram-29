@@ -21,24 +21,23 @@ const unblockSubmitButton = () => {
   submitButton.textContent = SubmitButtonText.IDLE;
 };
 
-const setUserFormSubmit = (onSuccess) => {
-  imgUploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(new FormData(evt.target))
-        .then(onSuccess)
-        .then(showAlertSuccess('Форма удачно отправлена'))
-        .catch(
-          (err) => {
-            showAlertError(err.message);
-          }
-        )
-        .finally(unblockSubmitButton);
-    }
-  });
+const sendDataSuccess = async (data) => {
+  try {
+    await sendData(data);
+    closeForm();
+    showAlertSuccess('Форма отправлена успешно');
+  } catch {
+    showAlertError('Не удалось отправить форму, попробуйте еще раз');
+  }
 };
 
-setUserFormSubmit(closeForm);
+imgUploadForm.addEventListener('submit', async (evt) => {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    const formData = new FormData(evt.target);
+    await sendDataSuccess(formData);
+    unblockSubmitButton();
+  }
+});
