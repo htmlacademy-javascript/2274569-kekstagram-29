@@ -1,10 +1,5 @@
-import { data } from './api.js';
-
-const ALERT_SHOW_TIME = 5000;
 const RANDOM_PHOTOS_COUNT = 10;
-
-const errorContainer = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const successContainer = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const ALERT_SHOW_TIME = 5000;
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -50,10 +45,10 @@ const generateArrayUniqueNumbers = (a, b) => {
 };
 
 const randomNumbers = generateArrayUniqueNumbers(1, 24);
-const createRandomPosts = () => {
+const createRandomPosts = (array) => {
   const randomPosts = [];
   for (let i = 0; i < randomNumbers.length; i++) {
-    const posts = data.find((post) => randomNumbers[i] === post.id);
+    const posts = array.find((post) => randomNumbers[i] === post.id);
     randomPosts.push(posts);
   }
   return randomPosts;
@@ -61,49 +56,26 @@ const createRandomPosts = () => {
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const showAlertError = (message) => {
-  errorContainer.style.height = '40px';
-  errorContainer.style.zIndex = '100';
-  errorContainer.style.position = 'absolute';
-  errorContainer.style.left = '0';
-  errorContainer.style.top = '0';
-  errorContainer.style.right = '0';
-  errorContainer.style.padding = '10px 3px';
-  errorContainer.style.fontSize = '30px';
-  errorContainer.style.textAlign = 'center';
-  errorContainer.style.backgroundColor = 'red';
-
-  errorContainer.textContent = message;
-
-  document.body.append(errorContainer);
+function showAlert (message) {
+  const alert = document.createElement('div');
+  alert.style.position = 'absolute';
+  alert.style.zIndex = '100';
+  alert.style.top = '0';
+  alert.style.left = '0';
+  alert.style.right = '0';
+  alert.style.padding = '10px 3px';
+  alert.style.fontSize = '30px';
+  alert.style.textAlign = 'center';
+  alert.style.background = 'red';
+  alert.textContent = message;
+  document.body.append(alert);
 
   setTimeout(() => {
-    errorContainer.remove();
+    alert.remove();
   }, ALERT_SHOW_TIME);
-};
+}
 
-const showAlertSuccess = (message) => {
-  successContainer.style.height = '40px';
-  successContainer.style.zIndex = '100';
-  successContainer.style.position = 'absolute';
-  successContainer.style.left = '0';
-  successContainer.style.top = '0';
-  successContainer.style.right = '0';
-  successContainer.style.padding = '10px 3px';
-  successContainer.style.fontSize = '30px';
-  successContainer.style.textAlign = 'center';
-  successContainer.style.backgroundColor = 'green';
-
-  successContainer.textContent = message;
-
-  document.body.append(successContainer);
-
-  setTimeout(() => {
-    successContainer.remove();
-  }, ALERT_SHOW_TIME);
-};
-
-function debounce (callback, timeoutDelay) {
+function debounce (callback, timeoutDelay = 500) {
   // Используем замыкания, чтобы id таймаута у нас навсегда приклеился
   // к возвращаемой функции с setTimeout, тогда мы его сможем перезаписывать
   let timeoutId;
@@ -121,4 +93,4 @@ function debounce (callback, timeoutDelay) {
   };
 }
 
-export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, showAlertError, showAlertSuccess, createRandomPosts, debounce};
+export {getRandomInteger, getRandomArrayElement, createRandomIdFromRangeGenerator, isEscapeKey, showAlert, createRandomPosts, debounce};

@@ -1,3 +1,5 @@
+import { showAlert } from './util.js';
+
 const URL = 'https://29.javascript.pages.academy/kekstagram';
 const Route = {
   GET_DATA: '/data',
@@ -21,7 +23,7 @@ const load = (route, errorText, method = Method.GET, body = null) =>
       return response.json();
     })
     .catch(() => {
-      throw new Error(errorText);
+      throw showAlert(errorText);
     });
 
 const getData = () => load(Route.GET_DATA, ErrorText.GET_DATA);

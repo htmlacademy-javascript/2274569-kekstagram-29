@@ -6,5 +6,6 @@ import './api.js';
 import './form-submission.js';
 import './image-filters.js';
 import { renderSortedPosts } from './image-filters.js';
-
+import './form-effects.js';
+import './util.js';
 renderSortedPosts();

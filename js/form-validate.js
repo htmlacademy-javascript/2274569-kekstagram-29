@@ -57,4 +57,4 @@ const calcelEsc = (item) => {
 calcelEsc(textHashtags);
 calcelEsc(textDescription);
 
-export {pristine};
+export {pristine, imgUploadForm};
