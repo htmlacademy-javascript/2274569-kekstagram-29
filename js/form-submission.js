@@ -1,33 +1,65 @@
+import { isEscapeKey } from './util.js';
+import { pristine, imgUploadForm } from './form-validate.js';
 import { sendData } from './api.js';
-import { showAlertError, showAlertSuccess } from './util.js';
-import { pristine } from './form-validate.js';
 import { closeForm } from './upload-form.js';
 
-const imgUploadForm = document.querySelector('.img-upload__form');
-const submitButton = document.querySelector('.img-upload__submit');
+const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const uploadButton = document.querySelector('.img-upload__submit');
 
-const SubmitButtonText = {
-  IDLE: 'Опубликовать',
-  SENDING: 'Публикую...'
+const ButtonClass = {
+  ERROR: '.error__button',
+  SUCCESS: '.success__button',
 };
 
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
+const closeMessage = () => {
+  const messages = document.querySelector('.error') || document.querySelector('.success');
+  messages.remove();
+  document.removeEventListener('keydown', onDocumentKeydown);
+  document.removeEventListener('click', onBodyClick);
 };
 
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+const showMessage = (message, buttonMessage) => {
+  document.body.append(message);
+  message.querySelector(buttonMessage).addEventListener('click', closeMessage);
+  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', onBodyClick);
+};
+
+function onDocumentKeydown (evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeMessage();
+  }
+}
+
+function onBodyClick (evt) {
+  if (evt.target.closest('.error__inner') || evt.target.closest('.success__inner')) {
+    return;
+  }
+  closeMessage();
+}
+
+const showSuccessMessage = () => showMessage(successMessage, ButtonClass.SUCCESS);
+const showErrorMessage = () => showMessage(errorMessage, ButtonClass.ERROR);
+
+const blockUploadButton = () => {
+  uploadButton.disabled = true;
+  uploadButton.textContent = 'Публикую...';
+};
+
+const unblockUploadButton = () => {
+  uploadButton.disabled = false;
+  uploadButton.textContent = 'Опубликовать';
 };
 
 const sendDataSuccess = async (data) => {
   try {
     await sendData(data);
     closeForm();
-    showAlertSuccess('Форма отправлена успешно');
+    showSuccessMessage();
   } catch {
-    showAlertError('Не удалось отправить форму, попробуйте еще раз');
+    showErrorMessage();
   }
 };
 
@@ -35,9 +67,9 @@ imgUploadForm.addEventListener('submit', async (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
-    blockSubmitButton();
+    blockUploadButton();
     const formData = new FormData(evt.target);
     await sendDataSuccess(formData);
-    unblockSubmitButton();
+    unblockUploadButton();
   }
 });

@@ -1,5 +1,4 @@
-const RERENDER_DELAY = 500;
-import { createRandomPosts, showAlertError, debounce } from './util.js';
+import { createRandomPosts, showAlert, debounce } from './util.js';
 import { data } from './api.js';
 import { renderMiniature } from './render-miniature-post.js';
 
@@ -8,7 +7,7 @@ const imageFilterDefault = document.querySelector('#filter-default');
 let currentFilter = imageFilterDefault.id;
 
 const copyPosts = data.slice();
-const randomData = createRandomPosts();
+const randomData = createRandomPosts(data);
 
 const comparePosts = (postA, postB) => postB.comments.length - postA.comments.length;
 const discussedData = copyPosts.sort(comparePosts);
@@ -24,11 +23,13 @@ const renderPosts = () => {
   try {
     renderMiniature(array);
   } catch (err) {
-    showAlertError(err.message);
+    showAlert(err.message);
   }
 };
 
-const renderDebounce = debounce(renderPosts, RERENDER_DELAY);
+const renderDebounce = debounce(() => {
+  renderPosts();
+});
 
 const renderSortedPosts = () => {
   renderPosts(currentFilter);
