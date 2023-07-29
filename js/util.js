@@ -44,7 +44,8 @@ const generateArrayUniqueNumbers = (a, b) => {
   return numbers;
 };
 
-const randomNumbers = generateArrayUniqueNumbers(1, 24);
+// Генерируем 10 неповторяющихся чисел от 0 до 24, т.к. в данном случае массив с сервера содержит только 25 постов.
+const randomNumbers = generateArrayUniqueNumbers(0, 24);
 const createRandomPosts = (array) => {
   const randomPosts = [];
   for (let i = 0; i < randomNumbers.length; i++) {
