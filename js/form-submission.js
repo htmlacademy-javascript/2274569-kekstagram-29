@@ -1,7 +1,7 @@
 import { isEscapeKey } from './util.js';
 import { pristine, imgUploadForm } from './form-validate.js';
 import { sendData } from './api.js';
-import { closeForm } from './upload-form.js';
+import { closeForm, onDocumentKeydown } from './upload-form.js';
 
 const successMessage = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
 const errorMessage = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
@@ -15,18 +15,21 @@ const ButtonClass = {
 const closeMessage = () => {
   const messages = document.querySelector('.error') || document.querySelector('.success');
   messages.remove();
-  document.removeEventListener('keydown', onDocumentKeydown);
+  window.removeEventListener('keydown', onDocumentKeydownEsc);
   document.removeEventListener('click', onBodyClick);
 };
 
 const showMessage = (message, buttonMessage) => {
   document.body.append(message);
   message.querySelector(buttonMessage).addEventListener('click', closeMessage);
-  document.addEventListener('keydown', onDocumentKeydown);
+  window.addEventListener('keydown', onDocumentKeydownEsc);
   document.addEventListener('click', onBodyClick);
+  if (message === errorMessage) {
+    window.removeEventListener('keydown', onDocumentKeydown);
+  }
 };
 
-function onDocumentKeydown (evt) {
+function onDocumentKeydownEsc (evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeMessage();
